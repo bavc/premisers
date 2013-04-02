@@ -26,10 +26,10 @@ cd "$package_path"
 mediainfo -f --language=raw --output=XML "./objects" > "./metadata/mediainfo.xml"
 EC=`echo "$?"`
 if [ "$EC" -ne "0" ] ; then
-    eventOutcome="failure"
-    #quarantine?
+	eventOutcome="failure"
+	#quarantine?
 else
-    eventOutcome="success"
+	eventOutcome="success"
 fi
 cd "$startdir"
 xsltproc --stringparam representation_objectIdentifierValue "${package_name}" "${script_dir}/mediainfo2premis.xsl" "$package_path/metadata/mediainfo.xml" > "$package_path/metadata/premis.xml"
