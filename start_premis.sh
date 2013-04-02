@@ -13,13 +13,10 @@ package_name=`basename "${package_path}"`
 # pre-requisites
 [ -s "$package_path/metadata/premis.xml" ] && { echo premis.xml already exists. ; exit 1 ;};
 
-"$script_dir/deathToDS_Store.sh" "$package_path"
-"$script_dir/verifySIPCompliance.py" "$package_path"
-[ "$?" != 0 ] && { echo "$package_path fails SIP Compliance tests." ; exit 1 ;};
-
 # test to make sure the supplied package path is valid
 [ -z "${package_path}" ] && { echo The input directory has not been declared. ; exit 1 ;};
 [ ! -d "${package_path}" ] && { echo "$package_path" is not a directory. ; exit 1 ;};
+[ ! -d "${package_path}/objects" ] && { echo "$package_path" does not contain an objects subdirectory. Exiting. ; exit 1 ;};
 
 startdir=`pwd`
 cd "$package_path"
