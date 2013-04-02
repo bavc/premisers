@@ -6,6 +6,17 @@
 [ ! `which mediainfo` ] && { echo Missing mediainfo utility ; exit 1 ;};
 [ ! `which xml` ] && { echo Missing xmlstarlet utility ; exit 1 ;};
 
+if [ `which uuid` ] ; then
+	makeuuid="uuid -v 4"
+elif [ `which uuidgen` ] ; then
+	makeuuid="uuidgen"
+elif [ `which python` ] ; then
+	makeuuid="python -c 'import uuid; print uuid.uuid1()'"
+else
+	echo Missing a uuid generator
+	exit 1
+fi
+
 script_dir=`dirname "$0"`
 package_path="$1"
 package_name=`basename "${package_path}"`
@@ -33,7 +44,7 @@ xsltproc --stringparam representation_objectIdentifierValue "${package_name}" "$
 
 #set premis event variables
 eventIdentifierType="UUID"
-eventIdentifierValue=`uuid -v 4`
+eventIdentifierValue=`eval "$makeuuid"`
 eventType="description-mediainfo-v1"
 eventDateTime=`date "+%FT%T"`
 eventDetail="Original object is described with mediainfo"
